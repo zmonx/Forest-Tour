@@ -3,12 +3,14 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '10.0'
 
-target 'TourApp' do
+target 'ff' do
   config = use_native_modules!
 
   use_react_native!(:path => config["reactNativePath"])
 
-  target 'TourAppTests' do
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
+  target 'ffTests' do
     inherit! :complete
     # Pods for testing
   end
@@ -23,10 +25,10 @@ target 'TourApp' do
   end
 end
 
-target 'TourApp-tvOS' do
-  # Pods for TourApp-tvOS
+target 'ff-tvOS' do
+  # Pods for ff-tvOS
 
-  target 'TourApp-tvOSTests' do
+  target 'ff-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end
