@@ -1,114 +1,93 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
+//This is an example code for Bottom Navigation//
 import React from 'react';
 import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
+  Button,
   Text,
-  StatusBar,
+  View,
+  TouchableOpacity,
+  StyleSheet
 } from 'react-native';
+//import all the basic component we have used
+import Ionicons from 'react-native-vector-icons/Ionicons';
+//import Ionicons to show the icon for bottom options
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+//import React Navigation
+import {createAppContainer} from 'react-navigation';
+import {createBottomTabNavigator} from 'react-navigation-tabs';
+import {createStackNavigator} from 'react-navigation-stack';
 
-const App: () => React$Node = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
-  );
-};
-
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
+import HomeScreen from './pages/HomeScreen';
+import SettingsScreen from './pages/SettingsScreen';
+import DetailsScreen from './pages/DetailsScreen';
+import ProfileScreen from './pages/ProfileScreen';
+const HomeStack = createStackNavigator(
+  {
+    //Defination of Navigaton from home screen
+    Home: { screen: HomeScreen },
+    Details: { screen: DetailsScreen },
   },
-  engine: {
-    position: 'absolute',
-    right: 0,
+  {
+    defaultNavigationOptions: {
+      //Header customization of the perticular Screen
+      headerStyle: {
+        backgroundColor: '#42f44b',
+      },
+      headerTintColor: '#FFFFFF',
+      title: 'Home',
+      //Header title
+    },
+  }
+);
+const SettingsStack = createStackNavigator(
+  {
+    //Defination of Navigaton from setting screen
+    Settings: { screen: SettingsScreen },
+    Details: { screen: DetailsScreen },
+    Profile: { screen: ProfileScreen },
   },
-  body: {
-    backgroundColor: Colors.white,
+  {
+    defaultNavigationOptions: {
+      //Header customization of the perticular Screen
+      headerStyle: {
+        backgroundColor: '#42f44b',
+      },
+      headerTintColor: '#FFFFFF',
+      title: 'Settings',
+      //Header title
+    },
+  }
+);
+const App = createBottomTabNavigator(
+  {
+    Home: { screen: HomeStack },
+    Settings: { screen: SettingsStack },
   },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
-});
-
-export default App;
+  {
+    defaultNavigationOptions: ({ navigation }) => ({
+      tabBarIcon: ({ focused, horizontal, tintColor }) => {
+        const { routeName } = navigation.state;
+        let IconComponent = Ionicons;
+        let iconName;
+        if (routeName === 'Home') {
+          iconName = `ios-information-circle${focused ?
+            '' : '-outline'
+          }`;
+        } else if (routeName === 'Settings') {
+          iconName = `ios-checkmark-circle${focused ?
+            '' : '-outline'
+          }`;
+        }
+        return <IconComponent
+                 name={iconName}
+                 size={25}
+                 color={tintColor}
+               />;
+      },
+    }),
+    tabBarOptions: {
+      activeTintColor: '#42f44b',
+      inactiveTintColor: 'gray',
+    },
+  }
+);
+export default createAppContainer(App);
